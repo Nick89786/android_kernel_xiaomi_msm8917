@@ -2381,8 +2381,9 @@ static int gtp_fb_notifier_callback(struct notifier_block *noti,
 
 	if (ev_data && ev_data->data && event == FB_EVENT_BLANK && ts) {
 		blank = ev_data->data;
-		if (*blank == FB_BLANK_UNBLANK ||
-		    *blank == FB_BLANK_NORMAL) {
+		if (*blank == FB_BLANK_UNBLANK
+                                  || *blank == FB_BLANK_NORMAL
+                                  || *blank == FB_BLANK_VSYNC_SUSPEND) {
 			dev_dbg(&ts->client->dev, "ts_resume");
 			if (ts->pdata->resume_in_workqueue)
 				schedule_work(&ts->fb_notify_work);
