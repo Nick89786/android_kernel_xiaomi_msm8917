@@ -211,6 +211,7 @@ dtb-$(CONFIG_ARCH_MSM8917) += msm8917-rumi.dtb \
 	msm8917-pmi8950-rcm.dtb \
 	msm8917-qgp-tmo.dtb \
 	msm8917-pmi8937-qrd-sku5.dtb \
+        msm8917-pmi8937-qrd-sku5_S88503.dtb \
 	msm8917-pmi8937-qrd-sku5_S88505.dtb \
 	apq8017-pmi8937-cdp-wcd-rome.dtb \
 	apq8017-pmi8950-cdp-wcd-rome.dtb \
