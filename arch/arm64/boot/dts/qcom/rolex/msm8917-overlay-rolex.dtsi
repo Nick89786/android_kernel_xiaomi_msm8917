@@ -1,5 +1,6 @@
 #include "msm8917-audio-rolex.dtsi"
 #include "msm8917-camera-pinctrl-rolex.dtsi"
+#include "msm8917-cpu-rolex.dtsi"
 #include "msm8917-pinctrl-rolex.dtsi"
 #include "msm8917-camera-sensor-qrd-rolex.dtsi"
 #include "msm8917-mdss-rolex.dtsi"
