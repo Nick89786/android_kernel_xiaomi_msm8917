@@ -1,4 +1,5 @@
 /* Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -310,6 +311,11 @@ static int64_t of_batterydata_convert_battery_id_kohm(int batt_id_uv,
 	return resistor_value_kohm;
 }
 
+
+extern int battid_resister;
+
+int battery_type_id = 0 ;
+
 struct device_node *of_batterydata_get_best_profile(
 		const struct device_node *batterydata_container_node,
 		const char *psy_name,  const char  *batt_type)
@@ -322,6 +328,7 @@ struct device_node *of_batterydata_get_best_profile(
 	int delta = 0, best_delta = 0, best_id_kohm = 0, id_range_pct,
 		batt_id_kohm = 0, i = 0, rc = 0, limit = 0;
 	bool in_range = false;
+	bool default_id = false;
 
 	psy = power_supply_get_by_name(psy_name);
 	if (!psy) {
@@ -335,7 +342,8 @@ struct device_node *of_batterydata_get_best_profile(
 		return ERR_PTR(-ENOSYS);
 	}
 
-	batt_id_kohm = ret.intval / 1000;
+		batt_id_kohm = battid_resister;
+		pr_err("C3N batt_id = %d\n", batt_id_kohm);
 
 	/* read battery id range percentage for best profile */
 	rc = of_property_read_u32(batterydata_container_node,
@@ -394,7 +402,7 @@ struct device_node *of_batterydata_get_best_profile(
 
 	/* check that profile id is in range of the measured batt_id */
 	if (abs(best_id_kohm - batt_id_kohm) >
-			((best_id_kohm * id_range_pct) / 100)) {
+			((best_id_kohm * id_range_pct) / 100) && !default_id) {
 		pr_err("out of range: profile id %d batt id %d pct %d",
 			best_id_kohm, batt_id_kohm, id_range_pct);
 		return NULL;
@@ -406,6 +414,12 @@ struct device_node *of_batterydata_get_best_profile(
 		pr_info("%s found\n", battery_type);
 	else
 		pr_info("%s found\n", best_node->name);
+
+	if (strcmp(battery_type, "wingtech-feimaotui-4v4-3030mah") == 0) {
+			 battery_type_id = 1;
+	} else if (strcmp(battery_type, "wingtech-xingwangda-4v4-3030mah") == 0) {
+			 battery_type_id = 2;
+	}
 
 	return best_node;
 }
