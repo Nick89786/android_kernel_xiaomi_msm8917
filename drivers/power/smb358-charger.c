@@ -191,12 +191,7 @@
 #define SMB358_DEFAULT_BATT_CAPACITY	10
 #define SMB358_BATT_GOOD_THRE_2P5	0x1
 
-#ifdef CONFIG_C3N_SMB358
 #define BATTERY_FCC 3030
-#else
-#define BATTERY_FCC 3000
-#endif
-
 
 int pre_usb_current_ma = -EINVAL;
 bool thermal = false;
@@ -2475,6 +2470,24 @@ static void smb358_external_power_changed(struct power_supply *psy)
 			"Couldn't read USB current_max property, rc=%d\n", rc);
 	else
 		current_limit = prop.intval / 1000;
+
+	if (!((prop.intval / 1000) == 0))
+	{
+		// If Current (mA) is Equal to 500 mA, then USB is Connected.
+		if ((prop.intval / 1000) == 500)
+		{
+			// Raise USB-Charging Current (mA) to 1000 mA (Maximum Supported).
+		        pr_info("Using USB Current (mA) %d", 1000);
+			current_limit = 1000;
+		}
+		else
+		{
+			pr_info("Using AC Charge Current (mA) %d", 1250);
+			current_limit = 1250;
+		}
+	}
+	else
+		current_limit = 0;
 
 	chip->psy_usb_ma = current_limit;
 	smb358_enable_volatile_writes(chip);
