@@ -44,6 +44,11 @@
 	/delete-property/ msm-vdd-wsa-switch-supply;
 	/delete-property/ qcom,msm-vdd-wsa-switch-voltage;
 	/delete-property/ qcom,msm-vdd-wsa-switch-current;
+	/delete-property/ qcom,msm-gpios;
+	/delete-property/ qcom,pinctrl-names;
+	/delete-property/ pinctrl-names;
+	/delete-property/ pinctrl-0;
+	/delete-property/ pinctrl-1;
 };
 
 &wsa881x_i2c_f {
