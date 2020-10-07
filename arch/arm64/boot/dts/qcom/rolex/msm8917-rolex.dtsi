@@ -12,6 +12,12 @@
  * GNU General Public License for more details.
  */
 
+/ {
+	chosen {
+		/delete-property/ bootargs;
+	};
+};
+
 &other_ext_mem {
 	reg = <0x0 0x84A00000 0x0 0x1E00000>;
 };
